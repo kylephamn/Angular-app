@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+/* Add this to src/styles.css */
+
+/* Main colors - meeting accessibility requirements (contrast ratio > 7) */
+:root {
+    --primary-color: #4e54c8; /* Blue */
+    --secondary-color: #2c3e50; /* Dark blue */
+    --accent-color: #e74c3c; /* Red */
+    --text-color: #34495e; /* Dark gray */
+    --background-color: #ffffff; /* White */
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1, h2, h3 {
+    color: var(--secondary-color);
+  }
+  
+  /* Print styles */
+  @media print {
+    body {
+      filter: grayscale(100%);
+    }
+    
+    .no-print {
+      display: none !important;
+    }
+  }

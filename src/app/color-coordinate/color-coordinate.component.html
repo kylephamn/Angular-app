@@ -1,0 +1,113 @@
+<section class="generator-hero">
+  <h2>Color Coordinate Generator</h2>
+  <p>Create customized color coordinate sheets for your educational activities!</p>
+</section>
+
+<section class="generator-container">
+  <div class="controls-container" id="controls-container">
+    <h3>Generator Controls</h3>
+
+    <form [formGroup]="generatorForm" (ngSubmit)="generateCoordinateSheet()">
+      <table>
+        <tr>
+          <td>
+            <label for="rows">Rows:</label>
+            <input type="number" id="rows" formControlName="rows" min="1" max="1000">
+            <div *ngIf="rowsControl.invalid && rowsControl.touched" class="error-message">
+              <span *ngIf="rowsControl.errors?.['required']">Rows is required.</span>
+              <span *ngIf="rowsControl.errors?.['min']">Minimum value is 1.</span>
+              <span *ngIf="rowsControl.errors?.['max']">Maximum value is 1000.</span>
+            </div>
+          </td>
+          <td>
+            <label for="cols" class="cols">Columns:</label>
+            <input type="number" class="cols" id="cols" formControlName="cols" min="1" max="702">
+            <div *ngIf="colsControl.invalid && colsControl.touched" class="error-message">
+              <span *ngIf="colsControl.errors?.['required']">Columns is required.</span>
+              <span *ngIf="colsControl.errors?.['min']">Minimum value is 1.</span>
+              <span *ngIf="colsControl.errors?.['max']">Maximum value is 702.</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="colors">Colors:</label>
+            <input type="number" id="colors" formControlName="colors" min="1" max="10">
+            <div *ngIf="colorsControl.invalid && colorsControl.touched" class="error-message">
+              <span *ngIf="colorsControl.errors?.['required']">Colors is required.</span>
+              <span *ngIf="colorsControl.errors?.['min']">Minimum value is 1.</span>
+              <span *ngIf="colorsControl.errors?.['max']">Maximum value is 10.</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+      
+      <div class="control-group">
+        <table>
+          <tr>
+            <td><label for="showCoordinates">Show Coordinates:</label></td>
+            <td><input type="checkbox" id="showCoordinates" formControlName="showCoordinates"></td>
+          </tr>
+        </table>
+      </div>
+      
+      <button type="submit" [disabled]="!generatorForm.valid" id="generate-btn" class="cta-button">Generate Coordinate Sheet</button>
+    </form>
+    
+    <button *ngIf="isGridGenerated" id="print-btn" class="secondary-button" (click)="printPage()">Print</button>
+  </div>
+  
+  <div class="preview-container">
+    <h3>Preview</h3>
+    <div id="coordinate-preview">
+      <div *ngIf="!isGridGenerated" id="placeholder-text" class="placeholder-text">Your color coordinate sheet will appear here.</div>
+      
+      <div *ngIf="isGridGenerated && colorSelectionTable.length > 0">
+        <h4>Color Selection</h4>
+        <table class="color-tbl" id="colors-tbl">
+          <tr *ngFor="let color of colorSelectionTable; let i = index">
+            <td class="left-col">
+              <input type="radio" name="colors" [id]="'color-' + i" [(ngModel)]="selectedColorIndex" [value]="i">
+              <select [(ngModel)]="selectedColors[i]" (change)="updateColorSelection(i)">
+                <option *ngFor="let availableColor of availableColors" [value]="availableColor" 
+                        [disabled]="isColorSelected(availableColor) && selectedColors[i] !== availableColor">
+                  {{availableColor}}
+                </option>
+              </select>
+            </td>
+            <td [style.backgroundColor]="selectedColors[i]"></td>
+          </tr>
+        </table>
+      </div>
+      
+      <div *ngIf="isGridGenerated" id="grid-container" [ngClass]="{'hidden': !isGridGenerated}">
+        <table class="coordinate-grid">
+          <tr>
+            <th></th>
+            <th *ngFor="let col of columnHeaders">{{col}}</th>
+          </tr>
+          <tr *ngFor="let row of rowNumbers; let r = index">
+            <td class="row-number">{{row}}</td>
+            <td *ngFor="let col of columnHeaders; let c = index" 
+                class="grid-cell"
+                [style.backgroundColor]="getCellColor(r, c)"
+                (click)="cellClicked(r, c, row, col)">
+              <span *ngIf="generatorForm.value.showCoordinates">{{col}}{{row}}</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="instructions">
+  <h3>How to Use the Generator</h3>
+  <ol>
+    <li>Select your desired grid size</li>
+    <li>Choose colors from the palette or add custom colors</li>
+    <li>Select a pattern type</li>
+    <li>Click "Generate" to create your coordinate sheet</li>
+    <li>Download your creation as a PDF or image</li>
+  </ol>
+</section>

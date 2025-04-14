@@ -1,0 +1,103 @@
+/* About Hero */
+.about-hero {
+    background-color: #93D0AC;
+    padding: 3rem 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .about-hero h2 {
+    color: #1E4D2B;
+  }
+  
+  /* Team Grid */
+  .team-grid {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .team-row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .team-card {
+    width: 512px;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .member-photo {
+    width: 512px;
+    height: 512px;
+    overflow: hidden;
+  }
+  
+  .member-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .member-info {
+    padding: 1.5rem;
+    flex: 1;
+  }
+  
+  .member-role {
+    color: #486b55;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+  }
+  
+  .member-social {
+    margin-top: 1rem;
+  }
+  
+  .member-social a {
+    display: inline-block;
+    margin-right: 1rem;
+    color: #1E4D2B;
+    font-size: 1.2rem;
+  }
+  
+  .member-social a:hover {
+    color: #F26322;
+    transform: translateY(-2px);
+  }
+  
+  /* Our Mission */
+  .our-mission {
+    padding: 3rem 2rem;
+    text-align: center;
+    background-color: #93D0AC;
+    margin-top: 2rem;
+  }
+  
+  .our-mission p {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .team-row {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .team-card {
+      width: 100%;
+      max-width: 512px;
+    }
+  
+    .member-photo {
+      width: 100%;
+      height: auto;
+    }
+  }
