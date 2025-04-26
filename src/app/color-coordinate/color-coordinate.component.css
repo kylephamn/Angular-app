@@ -169,6 +169,10 @@ input[type="number"] {
   button {
     display: none;
   }
+
+  input[type="radio"] {
+    display: none;
+  }
   
   .preview-container {
     box-shadow: none;
