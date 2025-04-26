@@ -18,7 +18,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
           <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i class="fas fa-home"></i> Home</a></li>
           <li><a routerLink="/color-coordinate" routerLinkActive="active"><i class="fas fa-palette"></i> Color Coordinate Generator</a></li>
           <li><a routerLink="/about" routerLinkActive="active"><i class="fas fa-users"></i> About Us</a></li>
-          
+          <li><a routerLink="/editor" routerLinkActive="active"><i class="fas fa-users"></i> Color Editor</a></li>
         </ul>
       </nav>
     </header>

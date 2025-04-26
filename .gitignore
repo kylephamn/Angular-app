@@ -34,6 +34,9 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
+#angular and node_modules
+/.angular
+/node_modules
 
 # System files
 .DS_Store
