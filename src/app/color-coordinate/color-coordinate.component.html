@@ -75,13 +75,14 @@
                 </option>
               </select>
             </td>
-            <td [style.backgroundColor]="selectedColors[i]"></td>
+            <td [style.backgroundColor]="selectedColors[i]" [id]="selectedColors[i]" class="color-mid-col"></td>
+            <td class="right-col" id="right-col"></td>
           </tr>
         </table>
       </div>
       
       <div *ngIf="isGridGenerated" id="grid-container" [ngClass]="{'hidden': !isGridGenerated}">
-        <table class="coordinate-grid">
+        <table class="coordinate-grid" id="coordinate-grid">
           <tr>
             <th></th>
             <th *ngFor="let col of columnHeaders">{{col}}</th>
