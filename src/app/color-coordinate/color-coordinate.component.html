@@ -13,35 +13,41 @@
           <td>
             <label for="rows">Rows:</label>
             <input type="number" id="rows" formControlName="rows" min="1" max="1000">
-            <div *ngIf="rowsControl.invalid && rowsControl.touched" class="error-message">
-              <span *ngIf="rowsControl.errors?.['required']">Rows is required.</span>
-              <span *ngIf="rowsControl.errors?.['min']">Minimum value is 1.</span>
-              <span *ngIf="rowsControl.errors?.['max']">Maximum value is 1000.</span>
+            <div *ngIf="rowsControl?.invalid && rowsControl?.touched" class="error-message">
+              
+              <span *ngIf="rowsControl?.errors?.['required']">Rows is required.</span>
+              <span *ngIf="rowsControl?.errors?.['min']">Minimum value is 1.</span>
+              <span *ngIf="rowsControl?.errors?.['max']">Maximum value is 1000.</span>
             </div>
           </td>
           <td>
             <label for="cols" class="cols">Columns:</label>
+         
             <input type="number" class="cols" id="cols" formControlName="cols" min="1" max="702">
-            <div *ngIf="colsControl.invalid && colsControl.touched" class="error-message">
-              <span *ngIf="colsControl.errors?.['required']">Columns is required.</span>
-              <span *ngIf="colsControl.errors?.['min']">Minimum value is 1.</span>
-              <span *ngIf="colsControl.errors?.['max']">Maximum value is 702.</span>
+            <div *ngIf="colsControl?.invalid && colsControl?.touched" class="error-message">
+             
+              <span *ngIf="colsControl?.errors?.['required']">Columns is required.</span>
+              <span *ngIf="colsControl?.errors?.['min']">Minimum value is 1.</span>
+              <span *ngIf="colsControl?.errors?.['max']">Maximum value is 702.</span>
             </div>
           </td>
         </tr>
         <tr>
           <td>
             <label for="colors">Colors:</label>
-            <input type="number" id="colors" formControlName="colors" min="1" max="10">
-            <div *ngIf="colorsControl.invalid && colorsControl.touched" class="error-message">
-              <span *ngIf="colorsControl.errors?.['required']">Colors is required.</span>
-              <span *ngIf="colorsControl.errors?.['min']">Minimum value is 1.</span>
-              <span *ngIf="colorsControl.errors?.['max']">Maximum value is 10.</span>
+         
+            <input type="number" id="colors" formControlName="colors" min="1" [max]="availableColors.length || 1">
+            <div *ngIf="colorsControl?.invalid && colorsControl?.touched" class="error-message">
+              <span *ngIf="colorsControl?.errors?.['required']">Colors is required.</span>
+              <span *ngIf="colorsControl?.errors?.['min']">Minimum value is 1.</span>
+              <span *ngIf="colorsControl?.errors?.['max']">Maximum value is {{availableColors.length || 1}}.</span>
+              <span *ngIf="availableColors.length === 0">No colors available in the editor.</span>
             </div>
           </td>
         </tr>
       </table>
-      
+
+
       <div class="control-group">
         <table>
           <tr>
@@ -50,52 +56,93 @@
           </tr>
         </table>
       </div>
-      
-      <button type="submit" [disabled]="!generatorForm.valid" id="generate-btn" class="cta-button">Generate Coordinate Sheet</button>
-    </form>
+
     
-    <button *ngIf="isGridGenerated" id="print-btn" class="secondary-button" (click)="printPage()">Print</button>
+      <button type="submit"
+              [disabled]="!generatorForm.valid || availableColors.length === 0 || colorsControl?.invalid"
+              id="generate-btn"
+              class="cta-button">
+              Generate Coordinate Sheet
+     </button>
+    </form>
+
+ 
+    <button *ngIf="isGridGenerated" id="print-btn" class="secondary-button no-print" (click)="printPage()">Print</button>
   </div>
-  
+
+
   <div class="preview-container">
     <h3>Preview</h3>
     <div id="coordinate-preview">
-      <div *ngIf="!isGridGenerated" id="placeholder-text" class="placeholder-text">Your color coordinate sheet will appear here.</div>
-      
-      <div *ngIf="isGridGenerated && colorSelectionTable.length > 0">
+      <div *ngIf="!isGridGenerated && availableColors.length > 0" class="placeholder-text">Your color coordinate sheet will appear here after you click "Generate".</div>
+      <div *ngIf="!isGridGenerated && availableColors.length === 0" class="placeholder-text">Loading available colors...</div>
+
+  
+      <div *ngIf="isGridGenerated && selectedColors.length > 0">
         <h4>Color Selection</h4>
-        <table class="color-tbl" id="colors-tbl">
-          <tr *ngFor="let color of colorSelectionTable; let i = index">
-            <td class="left-col">
-              <input type="radio" name="colors" [id]="'color-' + i" [(ngModel)]="selectedColorIndex" [value]="i">
-              <select [(ngModel)]="selectedColors[i]" (change)="updateColorSelection(i)">
-                <option *ngFor="let availableColor of availableColors" [value]="availableColor" 
-                        [disabled]="isColorSelected(availableColor) && selectedColors[i] !== availableColor">
-                  {{availableColor}}
-                </option>
-              </select>
-            </td>
-            <td [style.backgroundColor]="selectedColors[i]" [id]="selectedColors[i]" class="color-mid-col"></td>
-            <td class="right-col" id="right-col"></td>
-          </tr>
+        <table class="color-tbl">
+          <thead>
+            <tr>
+              <th>Paint</th> 
+              <th>Color Name</th> 
+              <th>Swatch</th> 
+               <th>Coordinates</th> 
+            </tr>
+          </thead>
+          <tbody>
+       
+            <tr *ngFor="let color of selectedColors; let i = index">
+              <td>
+             
+                <input type="radio"
+                       name="selectedColorIndexRadioGroup"
+                       [id]="'color-radio-' + i"
+                       [(ngModel)]="selectedColorIndex"
+                       [value]="i">
+                   
+                <label [attr.for]="'color-radio-' + i" class="visually-hidden">Select {{color?.name || 'this color'}} to paint</label>
+              </td>
+              <td>
+              
+                
+                <select [(ngModel)]="selectedColors[i]"
+                        (ngModelChange)="onColorChange(i, $event)"
+                        [attr.name]="'selectedColorSelect_' + i"> 
+                  <option *ngFor="let availableColor of availableColors"
+                          [ngValue]="availableColor"[disabled]="isColorAlreadySelected(availableColor, i)"> 
+                    {{availableColor.name}}
+                  </option>
+                </select>
+              </td>
+              <td [style.backgroundColor]="color?.hex_value" class="color-mid-col"></td>
+              <td class="right-col">
+                  <span>{{ getCoordinatesForColor(color?.id) }}</span>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
-      
-      <div *ngIf="isGridGenerated" id="grid-container" [ngClass]="{'hidden': !isGridGenerated}">
-        <table class="coordinate-grid" id="coordinate-grid">
-          <tr>
-            <th></th>
-            <th *ngFor="let col of columnHeaders">{{col}}</th>
-          </tr>
-          <tr *ngFor="let row of rowNumbers; let r = index">
-            <td class="row-number">{{row}}</td>
-            <td *ngFor="let col of columnHeaders; let c = index" 
-                class="grid-cell"
-                [style.backgroundColor]="getCellColor(r, c)"
-                (click)="cellClicked(r, c, row, col)">
-              <span *ngIf="generatorForm.value.showCoordinates">{{col}}{{row}}</span>
-            </td>
-          </tr>
+
+      <div *ngIf="isGridGenerated" id="grid-container">
+        <table class="coordinate-grid">
+          <thead> 
+             <tr>
+              <th></th> 
+              <th *ngFor="let col of columnHeaders">{{col}}</th>
+            </tr>
+          </thead>
+          <tbody> 
+            <tr *ngFor="let row of rowNumbers; let r = index">
+              <td class="row-number">{{row}}</td>
+              <td *ngFor="let col of columnHeaders; let c = index"
+    class="grid-cell"
+    [style.backgroundColor]="getCellColor(r, c)"
+    (click)="cellClicked(r, c, row, col)">
+  
+  <span *ngIf="generatorForm.value.showCoordinates">{{col}}{{row}}</span>
+</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -105,10 +152,28 @@
 <section class="instructions">
   <h3>How to Use the Generator</h3>
   <ol>
-    <li>Select your desired grid size</li>
-    <li>Choose colors from the palette or add custom colors</li>
-    <li>Select a pattern type</li>
-    <li>Click "Generate" to create your coordinate sheet</li>
-    <li>Download your creation as a PDF or image</li>
+    <li>Enter the desired number of Rows and Columns for your grid.</li>
+    <li>Enter the number of different Colors you want to use (up to the limit of available colors).</li>
+    <li>Click "Generate Coordinate Sheet".</li>
+    <li>The sheet will appear in the preview. Use the radio buttons next to the colors to select a color for painting.</li>
+    <li>Click on cells in the grid to fill them with the selected color.</li>
+    <li>The list of coordinates for each color will update automatically next to the color swatches.</li>
+    <li>Check/uncheck "Show Coordinates in Cells" to toggle coordinates display directly in the grid cells.</li>
+    <li>Click "Print" to print the generated sheet.</li>
+     <li><em>To add, remove, or manage the list of colors available for selection, please use the <a href="/color-editor">Color Editor</a> page.</em></li>
   </ol>
 </section>
+
+<!-- Adds a visually hidden class for screen readers-->
+<style>
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+</style>

@@ -1,113 +1,149 @@
+
+
 .generator-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin: 20px 0;
-  }
-  
-  .controls-container,
-  .preview-container {
-    padding: 15px;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .controls-container {
-    flex: 1;
-    min-width: 300px;
-  }
-  
-  .preview-container {
-    flex: 2;
-    min-width: 450px;
-  }
-  
-  form {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: inline-block;
-    margin-bottom: 5px;
-    font-weight: 500;
-  }
-  
-  input[type="color"] {
-    width: 70px;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 20px 0;
+}
 
-  select {
-    width: 100px;
-    padding: 5px;
-  }
+.controls-container,
+.preview-container {
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
-  input {
-    width: 70px;
-    padding: 5px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-  }
-  
-  .error-message {
-    color: #dc3545;
-    font-size: 0.85rem;
-    margin-top: 3px;
-  }
-  
-  .control-group {
-    margin-top: 15px;
-  }
-  
-  /* Buttons */
-  .cta-button,
-  .secondary-button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    margin-top: 15px;
-  }
-  
-  .cta-button {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .cta-button:hover {
-    background-color: #0069d9;
-  }
-  
-  .cta-button:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-  }
-  
-  .secondary-button {
-    background-color: #6c757d;
-    color: white;
-    margin-left: 10px;
-  }
-  
-  .secondary-button:hover {
-    background-color: #5a6268;
-  }
-  
-  /* Color selection table */
-  .color-tbl {
-    margin-bottom: 20px;
-    border-collapse: collapse;
-  }
-  
-  .color-tbl td {
-    padding: 5px;
-  }
-  
-  .color-tbl td:last-child {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #ced4da;
-  }
-  
-  
+.controls-container {
+  flex: 1;
+  min-width: 300px;
+}
+
+.preview-container {
+  flex: 2;
+  min-width: 450px;
+  overflow-x: auto;
+}
+
+.controls-container form {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e9ecef;
+}
+.controls-container form:last-child {
+   border-bottom: none;
+}
+
+
+label {
+display: block;
+margin-bottom: 5px;
+font-weight: 500;
+}
+
+input[type="text"],
+input[type="color"],
+select {
+width: calc(100% - 12px);
+padding: 6px;
+margin-bottom: 10px;
+border: 1px solid #ced4da;
+border-radius: 4px;
+box-sizing: border-box;
+}
+
+input[type="color"] {
+  height: 40px;
+  padding: 3px;
+}
+
+.error-message {
+color: #dc3545;
+font-size: 0.85rem;
+margin-top: -8px;
+margin-bottom: 10px;
+display: block;
+}
+
+
+.cta-button,
+.secondary-button {
+padding: 8px 16px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+font-weight: 500;
+margin-top: 5px;
+}
+
+.cta-button {
+background-color: #007bff;
+color: white;
+}
+
+.cta-button:hover {
+background-color: #0069d9;
+}
+
+.cta-button:disabled {
+background-color: #6c757d;
+cursor: not-allowed;
+}
+
+.secondary-button {
+background-color: #6c757d;
+color: white;
+margin-left: 10px;
+}
+
+.secondary-button:hover {
+background-color: #5a6268;
+}
+
+.color-tbl {
+width: 100%;
+border-collapse: collapse;
+margin-bottom: 20px;
+}
+
+.color-tbl th,
+.color-tbl td {
+border: 1px solid #dee2e6;
+padding: 8px;
+text-align: left;
+}
+.color-tbl th {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+
+.color-tbl td:last-child {
+width: 40px;
+height: 40px;
+padding: 0;
+border: 1px solid #ced4da;
+box-sizing: border-box;
+}
+
+
+.placeholder-text {
+text-align: center;
+padding: 50px 0;
+color: #6c757d;
+font-style: italic;
+}
+
+
+@media (max-width: 768px) {
+.generator-container {
+  flex-direction: column;
+}
+
+.controls-container,
+.preview-container {
+  width: 100%;
+  min-width: auto;
+}
+
+}

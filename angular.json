@@ -38,6 +38,8 @@
           },
           "configurations": {
             "production": {
+              "allowedCommonJsDependencies": ["sqlite3"],
+              "externalDependencies": ["sqlite3"],
               "budgets": [
                 {
                   "type": "initial",
@@ -53,6 +55,8 @@
               "outputHashing": "all"
             },
             "development": {
+              "allowedCommonJsDependencies": ["sqlite3"],
+              "externalDependencies": ["sqlite3"],
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
