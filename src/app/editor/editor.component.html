@@ -1,31 +1,72 @@
 <section class="generator-hero">
-    <h2>Color Editor</h2>
-    <p>Edit the available colors for your color picker here!</p>
-  </section>
-  
-  <section class="generator-container">
-    <div class="controls-container" id="controls-container">
-      <h3>Editor Controls</h3>
-      <form>
-        <label for="addcolor">Add A Color:</label>
-        <input type="color" id="addcolorval" name="addcolorval"><br>
-        <label for="addcolorname">New Color Name: </label><br>
-        <input id="addcolorname" name="addcolorname"><br>
-        <button type="submit" id="add-btn" class="cta-button">Add</button><br>
-      </form>
-      <form>
-        <label for="removecolor">Remove A Color:</label>
-        <select name="removecolortable" id="removecolortable"></select><br>
-        <button type="submit" id="remove-btn" class="cta-button">Remove</button><br>
-      </form>
-      <form>
-        <label for="editcolor">Edit Color:</label>
-        <select name="editcolortable" id="editcolortable"></select><br>
-        <button type="submit" id="edit-btn" class="cta-button">Edit</button><br>
-      </form>
-    </div>
-    
-    <div class="preview-container">
-      <h3>Color Table</h3>
-    </div>
-  </section>
+  <h2>Color Editor</h2>
+  <p>Edit the available colors for your color picker here!</p>
+</section>
+
+<section class="generator-container">
+  <div class="controls-container" id="controls-container">
+    <h3>Editor Controls</h3>
+
+    <form (ngSubmit)="addColor()">
+      <label for="newColorHex">Add A Color:</label><br>
+      <input type="color" id="newColorHex" name="newColorHex" [(ngModel)]="newColorHex"><br>
+      <label for="newColorName">New Color Name: </label><br>
+      <input id="newColorName" name="newColorName" [(ngModel)]="newColorName" placeholder="Enter color name."><br>
+      <button type="submit" id="add-btn" class="cta-button">Add</button><br>
+    </form>
+
+    <form (ngSubmit)="deleteColor()">
+      <label for="removecolortable">Remove A Color:</label><br>
+      <select name="selectedRemoveId" id="removecolortable" [(ngModel)]="selectedRemoveId">
+        <option [value]="null">Select a color to remove</option>
+        <option *ngFor="let color of availableColors" [value]="color.id">{{color.name}} ({{color.hex_value}})</option>
+      </select><br>
+      <button type="submit" id="delete-btn" class="cta-button">Delete</button><br>
+    </form>
+
+    <form (ngSubmit)="editColor()">
+      <label for="editcolortable">Edit Color:</label><br>
+      <select name="selectedEditId" id="editcolortable" [(ngModel)]="selectedEditId" (change)="loadEditColorData()">
+          <option [value]="null">Select a color to edit</option>
+          <option *ngFor="let color of availableColors" [value]="color.id">{{color.name}} ({{color.hex_value}})</option>
+      </select><br>
+      <div>
+          <label for="editcolorname">Edit Color Name: </label><br>
+          <input id="editcolorname" name="editcolorname" [(ngModel)]="editName"><br>
+          <label for="editcolorval">Edit Color:</label><br>
+          <input type="color" id="editcolorval" name="editcolorval" [(ngModel)]="editHex"><br>
+          <button type="submit" id="update-btn" class="cta-button">Update</button><br>
+      </div>
+    </form>
+  </div> 
+
+  <div class="preview-container">
+    <h3>Color Table</h3>
+    <div *ngIf="availableColors.length === 0">Loading colors...</div>
+    <table class="color-tbl">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Hex Value</th>
+          <th>Swatch</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let color of availableColors">
+          <td>{{ color.name }}</td>
+          <td>{{ color.hex_value }}</td>
+          <td [style.backgroundColor]="color.hex_value"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="instructions">
+  <h3>How to Use the Editor</h3>
+  <ul>
+    <li>Add New Colors: Enter a name and select a hex value, then click "Add".</li>
+    <li>Remove Colors: Select a color from the dropdown and click "Remove". (Requires at least 2 colors to remain).</li>
+    <li>Edit Colors: Select a color from the dropdown, edit its name and hex value, then click "Update".</li>
+  </ul>
+</section>
