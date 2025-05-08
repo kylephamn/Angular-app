@@ -77,10 +77,27 @@ export class ColorCoordinateComponent implements OnInit {
   }
   
   updateColorSelection(index: number): void {
-    //index is for new color from selectedColors table
-    //idea is loop through colors-tbl, split string, get cellnames
-    //loop through grid, check if cell coordinate (textContent?) matches cellname
-    //if match, update this.gridCellColors[rowindex][colIndex] = this.selectedColors[index]
+    let color = this.selectedColors[index];
+    var colortbl = document.getElementById("colors-tbl") as HTMLTableElement;
+    var arr: string[] = [];
+    for (var i = 0, row; row = colortbl.rows[i]; i++) {
+      var colorcol = row.cells[0];
+      var colorbtn = colorcol.lastChild as HTMLSelectElement;
+      if (colorbtn.value == color && row.cells[2].textContent != null) {
+        arr = row.cells[2].textContent?.split(",");
+      }
+    }
+    var grid = document.getElementById("coordinate-grid") as HTMLTableElement;
+    for (var i = 1, row; row = grid.rows[i]; i++) {
+      for (var j = 1, cell; cell = row.cells[j]; j++) {
+        var celltext = cell.textContent;
+        for (var k = 0; k < arr.length; k++) {
+          if (celltext != null && celltext == arr[k]) {
+            this.gridCellColors[i-1][j-1] = color;
+          }
+        }
+      }
+    }
   }
   
   cellClicked(rowIndex: number, colIndex: number, rowNumber: number, colHeader: string): void {
